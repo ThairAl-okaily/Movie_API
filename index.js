@@ -5,11 +5,16 @@ var req = require("request");
 
 app.set("view engine", "ejs");
 
+app.get("/", (request, res) => {
+    res.render("search");
+});
 
 app.get("/results", (request, res) =>{
-    req("http://www.omdbapi.com/?s=stars&apikey=thewdb", (err, respond) =>{
+    let sRule = request.query.searchRule;
+    let url = "http://www.omdbapi.com/?s=" + sRule + "&apikey=thewdb";
+    req(url, (err, response, body) =>{
         if (!err && res.statusCode === 200){
-            let data = JSON.parse(respond.body);
+            let data = JSON.parse(body);
             res.render("results", {data: data});
         }
     });
