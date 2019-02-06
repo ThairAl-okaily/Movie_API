@@ -3,11 +3,14 @@ var express = require("express");
 var app = express();
 var req = require("request");
 
+app.set("view engine", "ejs");
+
 
 app.get("/results", (request, res) =>{
     req("http://www.omdbapi.com/?s=stars&apikey=thewdb", (err, respond) =>{
         if (!err && res.statusCode === 200){
-            res.send(respond.body);
+            let data = JSON.parse(respond.body);
+            res.render("results", {data: data});
         }
     });
 });
